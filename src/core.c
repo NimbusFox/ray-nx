@@ -832,6 +832,8 @@ bool IsWindowReady(void)
     return CORE.Window.ready;
 }
 
+bool RunMainLoop();
+
 // Check if KEY_ESCAPE pressed or Close icon pressed
 bool WindowShouldClose(void)
 {
@@ -853,7 +855,7 @@ bool WindowShouldClose(void)
 
         CORE.Window.shouldClose = glfwWindowShouldClose(CORE.Window.handle);
 
-        return CORE.Window.shouldClose;
+        return CORE.Window.shouldClose || !RunMainLoop();
     }
     else return true;
 #endif
@@ -1333,6 +1335,8 @@ void ClearBackground(Color color)
     rlClearScreenBuffers();                             // Clear current framebuffers
 }
 
+void UpdateInputs();
+
 // Setup canvas (framebuffer) to start drawing
 void BeginDrawing(void)
 {
@@ -1345,7 +1349,10 @@ void BeginDrawing(void)
 
     //rlTranslatef(0.375, 0.375, 0);    // HACK to have 2D pixel-perfect drawing on OpenGL 1.1
                                         // NOTE: Not required with OpenGL 3.3+
+    UpdateInputs();
 }
+
+void UpdateConsole();
 
 // End canvas drawing and swap buffers (double buffering)
 void EndDrawing(void)
@@ -1407,6 +1414,8 @@ void EndDrawing(void)
 
         CORE.Time.frame += waitTime;      // Total frame time: update + draw + wait
     }
+
+    UpdateConsole();
 }
 
 // Initialize 2D mode with custom camera (2D)
