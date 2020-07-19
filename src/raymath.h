@@ -154,6 +154,18 @@ RMDEF float Lerp(float start, float end, float amount)
     return start + amount*(end - start);
 }
 
+// Normalize input value within input range
+RMDEF float Normalize(float value, float start, float end)
+{
+    return (value - start) / (end - start);
+}
+
+// Remap input value within input range to output range
+RMDEF float Remap(float value, float inputStart, float inputEnd, float outputStart, float outputEnd) 
+{
+    return (value - inputStart) / (inputEnd - inputStart) * (outputEnd - outputStart) + outputStart;
+}
+
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 math
 //----------------------------------------------------------------------------------
@@ -204,6 +216,13 @@ RMDEF Vector2 Vector2SubtractValue(Vector2 v, float sub)
 RMDEF float Vector2Length(Vector2 v)
 {
     float result = sqrtf((v.x*v.x) + (v.y*v.y));
+    return result;
+}
+
+// Calculate vector square length
+RMDEF float Vector2LengthSqr(Vector2 v)
+{
+    float result = (v.x*v.x) + (v.y*v.y);
     return result;
 }
 
@@ -280,6 +299,24 @@ RMDEF Vector2 Vector2Rotate(Vector2 v, float degs)
 {
     float rads = degs*DEG2RAD;
     Vector2 result = {v.x * cosf(rads) - v.y * sinf(rads) , v.x * sinf(rads) + v.y * cosf(rads) };
+    return result;
+}
+
+// Move Vector towards target
+RMDEF Vector2 Vector2MoveTowards(Vector2 v, Vector2 target, float maxDistance)
+{
+    Vector2 result = { 0 };
+    float dx = target.x - v.x;
+    float dy = target.y - v.y;
+    float value = (dx*dx) + (dy*dy);
+    
+    if ((value == 0) || ((maxDistance >= 0) && (value <= maxDistance*maxDistance))) result = target;
+    
+    float dist = sqrtf(value);
+    
+    result.x = v.x + dx/dist*maxDistance;
+    result.y = v.y + dy/dist*maxDistance;
+    
     return result;
 }
 
@@ -380,6 +417,13 @@ RMDEF Vector3 Vector3Perpendicular(Vector3 v)
 RMDEF float Vector3Length(const Vector3 v)
 {
     float result = sqrtf(v.x*v.x + v.y*v.y + v.z*v.z);
+    return result;
+}
+
+// Calculate vector square length
+RMDEF float Vector3LengthSqr(const Vector3 v)
+{
+    float result = v.x*v.x + v.y*v.y + v.z*v.z;
     return result;
 }
 
@@ -1240,7 +1284,7 @@ RMDEF Quaternion QuaternionFromVector3ToVector3(Vector3 from, Vector3 to)
 
     result.x = cross.x;
     result.y = cross.y;
-    result.z = cross.y;
+    result.z = cross.z;
     result.w = 1.0f + cos2Theta;     // NOTE: Added QuaternioIdentity()
 
     // Normalize to essentially nlerp the original and identity to 0.5

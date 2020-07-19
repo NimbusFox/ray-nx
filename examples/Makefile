@@ -119,7 +119,7 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     EMSCRIPTEN_PATH    ?= $(EMSDK_PATH)/upstream/emscripten
     CLANG_PATH          = $(EMSDK_PATH)/upstream/bin
     PYTHON_PATH         = $(EMSDK_PATH)/python/3.7.4_64bit
-    NODE_PATH           = $(EMSDK_PATH)/node/12.9.1_64bit/bin
+    NODE_PATH           = $(EMSDK_PATH)/node/12.18.1_64bit/bin
     export PATH         = $(EMSDK_PATH);$(EMSCRIPTEN_PATH);$(CLANG_PATH);$(NODE_PATH);$(PYTHON_PATH);C:\raylib\MinGW\bin:$$(PATH)
 endif
 
@@ -411,7 +411,8 @@ TEXTURES = \
     textures/textures_background_scrolling \
     textures/textures_sprite_button \
     textures/textures_sprite_explosion \
-    textures/textures_bunnymark
+    textures/textures_bunnymark \
+    textures/textures_blend_modes
     
 TEXT = \
     text/text_raylib_fonts \
