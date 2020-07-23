@@ -1,7 +1,3 @@
-//
-// Created by nimbusfox on 4/26/20.
-//
-
 #include <switch.h>
 #include "stdbool.h"
 
